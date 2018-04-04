@@ -97,7 +97,7 @@ namespace SettingsMaster
             GameEvents.onGameUnpause.Add(onGameUnPause);
             GameEvents.onGameSceneLoadRequested.Add(onGameSceneLoadRequested);
 
-            CheckActiveSettings();
+            //CheckActiveSettings();
 
             OnGUIAppLauncherReady();
             DontDestroyOnLoad(this);
@@ -123,11 +123,11 @@ namespace SettingsMaster
                 ApplicationLauncher.AppScenes.SPACECENTER |
                 ApplicationLauncher.AppScenes.FLIGHT |
                 ApplicationLauncher.AppScenes.MAPVIEW ,
-                "ParameterTypes_NS",
-                "parameterTypesButton",
-                "ParameterTypes/PluginData/Textures/Gear_38",
-                "ParameterTypes/PluginData/Textures/Gear_24",
-                "ParameterTypes"
+                "SettingsMaster_NS",
+                "SettingsMasterButton",
+                "SettingsMaster/PluginData/Textures/Gear_38",
+                "SettingsMaster/PluginData/Textures/Gear_24",
+                "Settings Master"
             );
             toolbarControl.UseBlizzy(useblizzy);
         }
@@ -139,6 +139,10 @@ namespace SettingsMaster
 
         void CountCustomParameterNodes()
         {
+            if (savedParameterTypes == null)
+                savedParameterTypes = new List<Type>(GameParameters.ParameterTypes);
+            GameParameters.ParameterTypes = new List<Type>(savedParameterTypes);
+
             nodeList = new List<Node>();
             sectionList = new Dictionary<string, Section>();
             foreach (var pt in GameParameters.ParameterTypes)
@@ -181,11 +185,11 @@ namespace SettingsMaster
                 toolbarControl.UseBlizzy(useblizzy);
 
                 if (activeSettings > MAXSETTINGS)
-                    toolbarControl.SetTexture("ParameterTypes/PluginData/Textures/Gear_38",
-                    "ParameterTypes/PluginData/Textures/Gear_24");
+                    toolbarControl.SetTexture("SettingsMaster/PluginData/Textures/Gear_38",
+                    "SettingsMaster/PluginData/Textures/Gear_24");
                 else
-                    toolbarControl.SetTexture("ParameterTypes/PluginData/Textures/Gear_Green_38",
-                    "ParameterTypes/PluginData/Textures/Gear_Green_24");
+                    toolbarControl.SetTexture("SettingsMaster/PluginData/Textures/Gear_Green_38",
+                    "SettingsMaster/PluginData/Textures/Gear_Green_24");
             }
         }
 
@@ -252,6 +256,14 @@ namespace SettingsMaster
             {
                 CheckActiveSettings();
             }
+#if false
+            if (HighLogic.LoadedScene == GameScenes.SPACECENTER)
+            {
+                foreach (var s in GameParameters.ParameterTypes)
+                    if (!savedParameterTypes.Contains(s))
+                        savedParameterTypes.Add(s);
+            }
+#endif
             UpdateButton();
 
             if (!GUIEnabled)
@@ -281,9 +293,11 @@ namespace SettingsMaster
         void DoWindow(int id)
         {
             GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
             GUILayout.Label("Settings pages Count:");
             GUILayout.FlexibleSpace();
-            GUILayout.Label(nodeList.Count.ToString());
+            GUILayout.Label(sectionList.Count.ToString());
+            GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();

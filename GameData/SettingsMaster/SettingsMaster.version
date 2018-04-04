@@ -1,5 +1,5 @@
 {
-  "NAME": "ParameterTypes",
+  "NAME": "SettingsMaster",
   "URL": "https://raw.githubusercontent.com/linuxgurugamer/SettingsMaster/master/SettingsMaster.version",
   "DOWNLOAD": "https://github.com/linuxgurugamer/SettingsMaster/releases",
     "GITHUB": {
@@ -10,7 +10,7 @@
     "MAJOR": 0,
     "MINOR": 0,
     "PATCH": 2,
-    "BUILD": 0
+    "BUILD": 2
   },
   "KSP_VERSION": {
     "MAJOR": 1,
